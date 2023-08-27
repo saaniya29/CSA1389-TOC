@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to check if a string belongs to the language defined by CFG
+bool belongsToCFG(char *str, int start, int end) {
+    if (start > end) {
+        return true; // Empty string is accepted
+    }
+
+    if (str[start] == '0' && str[end] == '0') {
+        for (int i = start + 1; i <= end - 1; i++) {
+            if (belongsToCFG(str, start + 1, i) && belongsToCFG(str, i + 1, end - 1)) {
+                return true; // S -> 0S0 production
+            }
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    char input_string[100];
+    printf("Enter an input string: ");
+    scanf("%s", input_string);
+
+    int len = strlen(input_string);
+
+    if (belongsToCFG(input_string, 0, len - 1)) {
+        printf("String belongs to the language defined by the CFG.\n");
+    } else {
+        printf("String does not belong to the language defined by the CFG.\n");
+    }
+
+    return 0;
+}
